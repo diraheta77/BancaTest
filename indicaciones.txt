@@ -1,0 +1,65 @@
+Estado de cuenta de una tarjeta de crédito
+En esta prueba técnica, el objetivo es desarrollar una aplicación web utilizando tecnologías .NET (Razor,
+jQuery, MVC) y una REST API que interactúe con una base de datos SQL Server utilizando procesos
+almacenados con PL/SQL. La aplicación debe permitir visualizar el estado de cuenta de una tarjeta de
+crédito, incluyendo el detalle de movimientos, cálculo de cuota mínima, cálculo de contado e interés
+bonificable, y mostrar el saldo utilizado y disponible de la tarjeta de crédito.
+
+* Requisitos funcionales
+Pantalla de Estado de Cuenta:
+• Mostrar el nombre del titular de la tarjeta de crédito y el número de tarjeta.
+• Mostrar el saldo actual de la tarjeta de crédito, el límite de crédito y el saldo disponible.
+• Mostrar una lista de las compras realizadas con la tarjeta de crédito en este mes, incluyendo
+fecha, descripción y monto
+• Mostrar el monto total de compras realizadas en el mes actual y en el mes anterior.
+• Mostrar el Interés Bonificable ([Saldo Total] x [Porcentaje Interés Configurable])
+• Mostrar en pantalla los valores que se solicitan a continuación:
+Variables de ejemplo:
+- Saldo Total = $114.47
+- Porcentaje Interés Configurable = 25%
+- Porcentaje Configurable Saldo Mínimo = 5%
+- Interés Bonificable = $114.47 x 25% = $28.61
+Cuota Mínima a Pagar:
+• Calcular y mostrar la cuota mínima a pagar (considerar un porcentaje configurable del saldo
+utilizado) ([Saldo Total] x [Porcentaje Configurable Saldo Mínimo]).
+Cuota mínima a pagar = $114.47 x 5% = $5.72
+Monto total a Pagar:
+• Calcular y mostrar el monto total a pagar. ([Saldo Total])(Suma de Compras)
+Monto Total a Pagar = $114.47
+Monto total de Contado con Intereses:
+• Calcular y mostrar el monto total de contado a pagar con Intereses (saldo utilizado más el interés
+bonificable) ([Saldo Total] + [Interés Bonificable])
+Pago de Contado con Intereses = $114.47 + $28.61 = $143.08
+• Exportar el Estado de cuenta en PDF
+Pantalla de Compras
+• Mostrar un formulario para agregar una nueva compra, ingresando la fecha, descripción y monto.
+Pantalla de Pagos
+• Mostrar un formulario para realizar un pago, ingresando el monto y la fecha del pago.
+Pantalla de Historial de Transacciones del mes
+• Mostrar una lista con todas las transacciones realizadas con la tarjeta de crédito, incluyendo
+compras y pagos, ordenadas por fecha de forma descendente en este mes
+
+* Requisitos técnicos
+• Implementar una REST API para la interacción con la base de datos utilizando ASP.NET Web API.
+• Utilizar tecnologías .NET o Framework frontend: Razor, jQuery, MVC o NEXT / NUXT para la
+implementación del Frontend que consumirá la API creada.
+• Utilizar SQL Server para almacenar la información de la tarjeta de crédito y las transacciones.
+• Implementar manejo de excepciones adecuado para posibles errores.
+
+La prueba se evaluará en función de los siguientes criterios
+• Funcionalidades completas y facilidad de revisar la prueba para el evaluador.
+• Buena estructura del código, siguiendo las mejores prácticas de desarrollo. (SOLID)
+• Uso adecuado de tecnologías .NET, Razor, jQuery, MVC y REST API.
+• Uso de .NET 6
+• Uso correcto y seguro de la base de datos SQL Server.
+• Manejo adecuado de excepciones y errores.
+• Una solución y 2 proyectos mínimo (uno para el MVC y el otro para la API)
+• Implementar Automapper
+• Implementar FluentValidation
+• Implementar Swagger
+• Implementar DTO para API y View Model para el Frontend MVC en Razor
+• Uso de UnitOfWork
+• Uso de CQRS
+• Uso de GlobalExceptions
+• Uso de Healthcheck
+• Procesos almacenados con PL/SQL
