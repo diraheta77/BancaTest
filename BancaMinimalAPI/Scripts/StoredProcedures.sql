@@ -21,6 +21,8 @@ BEGIN
 END
 GO
 
+
+
 -- Procedimiento para obtener transacciones del mes actual
 CREATE OR ALTER PROCEDURE sp_GetCurrentMonthTransactions
     @CreditCardId INT
