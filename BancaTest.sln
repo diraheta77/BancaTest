@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BancaAPI", "BancaAPI\BancaA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BancaWeb", "BancaWeb\BancaWeb.csproj", "{61BDD59B-BE11-430E-B4EA-137BF32ED0EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BancaMinimalAPI", "BancaMinimalAPI\BancaMinimalAPI.csproj", "{D450A08E-E430-412F-B262-7CBBF0882969}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{61BDD59B-BE11-430E-B4EA-137BF32ED0EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61BDD59B-BE11-430E-B4EA-137BF32ED0EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61BDD59B-BE11-430E-B4EA-137BF32ED0EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D450A08E-E430-412F-B262-7CBBF0882969}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D450A08E-E430-412F-B262-7CBBF0882969}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D450A08E-E430-412F-B262-7CBBF0882969}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D450A08E-E430-412F-B262-7CBBF0882969}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
