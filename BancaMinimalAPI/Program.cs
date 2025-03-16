@@ -11,11 +11,13 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.Data.SqlClient;
+using BancaMinimalAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddScoped<PdfGeneratorService>();
 //defino el context para la BD
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -136,6 +138,23 @@ app.MapGet("/api/creditcards/{id}/transactions/current-month", async (int id, Ap
     return Results.Ok(summary);
 })
 .WithName("GetCurrentMonthTransactions")
+.WithOpenApi();
+
+
+// Endpoint para exportar estado de cuenta a PDF
+app.MapGet("/api/creditcards/{id}/statement/pdf", async (int id, AppDbContext db, PdfGeneratorService pdfService) =>
+{
+    var statement = await db.GetCreditCardStatementAsync(id);
+    if (statement == null) return Results.NotFound();
+
+    var pdfBytes = pdfService.GenerateStatementPdf(statement);
+    return Results.File(
+        pdfBytes,
+        "application/pdf",
+        $"estado-cuenta-{id}-{DateTime.Now:yyyyMMdd}.pdf"
+    );
+})
+.WithName("ExportStatementPdf")
 .WithOpenApi();
 
 app.Run();
