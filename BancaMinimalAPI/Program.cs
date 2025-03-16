@@ -56,11 +56,9 @@ app.MapGet("/weatherforecast", () =>
 //Agrego los endpoints
 app.MapGet("/api/creditcards/{id}", async (int id, AppDbContext db, IMapper mapper) =>
 {
-    var creditCard = await db.GetCreditCardStatementAsync(id);
-    if (creditCard == null) return Results.NotFound();
-    
-    var dto = mapper.Map<CreditCardDTO>(creditCard);
-    return Results.Ok(dto);
+    var statement = await db.GetCreditCardStatementAsync(id);
+    if (statement == null) return Results.NotFound();
+    return Results.Ok(statement);
 })
 .WithName("GetCreditCard")
 .WithOpenApi();
@@ -133,8 +131,9 @@ app.MapPost("/api/transactions/payment", async (CreateTransactionDTO createDto, 
 // Endpoint para obtener transacciones del mes actual
 app.MapGet("/api/creditcards/{id}/transactions/current-month", async (int id, AppDbContext db, IMapper mapper) =>
 {
-    var transactions = await db.GetCurrentMonthTransactionsAsync(id);
-    return Results.Ok(mapper.Map<List<TransactionDTO>>(transactions));
+    var summary = await db.GetCurrentMonthTransactionsAsync(id);
+    //return Results.Ok(mapper.Map<List<TransactionDTO>>(transactions));
+    return Results.Ok(summary);
 })
 .WithName("GetCurrentMonthTransactions")
 .WithOpenApi();

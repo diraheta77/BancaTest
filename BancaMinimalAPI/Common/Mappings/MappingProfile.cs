@@ -9,10 +9,14 @@ namespace BancaMinimalAPI.Common.Mappings
     {
         public MappingProfile()
         {
+            // Credit Card mappings
             CreateMap<CreditCard, CreditCardDTO>();
-            CreateMap<Transaction, TransactionDTO>()
-                .ForMember(dest => dest.Type, 
-                    opt => opt.MapFrom(src => src.Type.ToString()));
+            CreateMap<CreditCardStatementDTO, CreditCardDTO>();
+            CreateMap<CreditCard, CreditCardStatementDTO>();
+
+            // Transaction mappings
+            CreateMap<Transaction, TransactionDTO>();
+            CreateMap<TransactionDTO, Transaction>();
         }
     }
 }
