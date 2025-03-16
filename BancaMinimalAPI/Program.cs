@@ -12,12 +12,17 @@ using System.Text.Json;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.Data.SqlClient;
 using BancaMinimalAPI.Services;
+using FluentValidation;
+using BancaMinimalAPI.Features.Transactions.Validators;
+using BancaMinimalAPI.Middleware;
+using BancaMinimalAPI.Common.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<PdfGeneratorService>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreatePaymentDTOValidator>();
 //defino el context para la BD
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -26,6 +31,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+// middleware de excepciones 
+app.UseGlobalExceptionHandler();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -79,8 +87,13 @@ app.MapGet("/api/creditcards/{id}/transactions", async (int id, AppDbContext db,
 .WithOpenApi();
 
 // Endpoint para crear una compra
-app.MapPost("/api/transactions/purchase", async (CreateTransactionDTO createDto, AppDbContext db) =>
+app.MapPost("/api/transactions/purchase", async (CreateTransactionDTO createDto, 
+    IValidator<CreateTransactionDTO> validator,
+    AppDbContext db) =>
 {
+    var validationResult = await ValidationMiddleware.ValidateAsync(createDto, validator);
+    if (validationResult != null) return validationResult;
+
     var transaction = new Transaction
     {
         CreditCardId = createDto.CreditCardId,
@@ -96,17 +109,22 @@ app.MapPost("/api/transactions/purchase", async (CreateTransactionDTO createDto,
         transaction.Id = transactionId;
         return Results.Created($"/api/transactions/{transactionId}", transaction);
     }
-    catch (SqlException ex)
+    catch (Exception ex)
     {
-        return Results.BadRequest(ex.Message);
+        throw new BusinessException($"Error al crear la compra: {ex.Message}");
     }
 })
 .WithName("CreatePurchase")
 .WithOpenApi();
 
 // Endpoint para realizar un pago
-app.MapPost("/api/transactions/payment", async (CreateTransactionDTO createDto, AppDbContext db) =>
+app.MapPost("/api/transactions/payment", async (CreatePaymentDTO createDto, 
+    IValidator<CreatePaymentDTO> validator,
+    AppDbContext db) =>
 {
+    var validationResult = await ValidationMiddleware.ValidateAsync(createDto, validator);
+    if (validationResult != null) return validationResult;
+
     var transaction = new Transaction
     {
         CreditCardId = createDto.CreditCardId,
@@ -122,9 +140,9 @@ app.MapPost("/api/transactions/payment", async (CreateTransactionDTO createDto, 
         transaction.Id = transactionId;
         return Results.Created($"/api/transactions/{transactionId}", transaction);
     }
-    catch (SqlException ex)
+    catch (Exception ex)
     {
-        return Results.BadRequest(ex.Message);
+        throw new BusinessException($"Error al procesar el pago: {ex.Message}");
     }
 })
 .WithName("CreatePayment")
@@ -155,6 +173,25 @@ app.MapGet("/api/creditcards/{id}/statement/pdf", async (int id, AppDbContext db
     );
 })
 .WithName("ExportStatementPdf")
+.WithOpenApi();
+
+// Endpoint para obtener estado de cuenta completo
+app.MapGet("/api/creditcards/{id}/full-statement", async (int id, AppDbContext db) =>
+{
+    try
+    {
+        var statement = await db.GetFullCreditCardStatementAsync(id);
+        if (statement == null)
+            throw new BusinessException("Tarjeta de crédito no encontrada", 404);
+            
+        return Results.Ok(statement);
+    }
+    catch (Exception ex)
+    {
+        throw new BusinessException($"Error al obtener el estado de cuenta: {ex.Message}");
+    }
+})
+.WithName("GetFullCreditCardStatement")
 .WithOpenApi();
 
 app.Run();

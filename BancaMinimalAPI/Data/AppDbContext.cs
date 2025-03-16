@@ -82,7 +82,7 @@ namespace BancaMinimalAPI.Data
 
             return summary;
         }
-        
+
 
         public async Task<int> CreateTransactionAsync(Transaction transaction)
         {
@@ -161,5 +161,68 @@ namespace BancaMinimalAPI.Data
         }
 
 
+        public async Task<CreditCardStatementDTO?> GetFullCreditCardStatementAsync(int creditCardId)
+        {
+            var parameter = new SqlParameter("@CreditCardId", creditCardId);
+            
+            using var command = Database.GetDbConnection().CreateCommand();
+            command.CommandText = "EXEC sp_GetFullCreditCardStatement @CreditCardId";
+            command.Parameters.Add(parameter);
+            
+            await Database.OpenConnectionAsync();
+            
+            using var reader = await command.ExecuteReaderAsync();
+            
+            // Si no hay resultados, retornar null
+            if (!await reader.ReadAsync())
+                return null;
+        
+            var statement = new CreditCardStatementDTO
+            {
+                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                CardNumber = reader.GetString(reader.GetOrdinal("CardNumber")),
+                HolderName = reader.GetString(reader.GetOrdinal("HolderName")),
+                CreditLimit = reader.GetDecimal(reader.GetOrdinal("CreditLimit")),
+                TotalBalance = reader.GetDecimal(reader.GetOrdinal("TotalBalance")),
+                InterestRate = reader.GetDecimal(reader.GetOrdinal("InterestRate")),
+                MinimumPaymentRate = reader.GetDecimal(reader.GetOrdinal("MinimumPaymentRate")),
+                AvailableBalance = reader.GetDecimal(reader.GetOrdinal("AvailableBalance")),
+                BonusInterest = reader.GetDecimal(reader.GetOrdinal("BonusInterest")),
+                MinimumPayment = reader.GetDecimal(reader.GetOrdinal("MinimumPayment")),
+                TotalAmount = reader.GetDecimal(reader.GetOrdinal("TotalAmount")),
+                TotalAmountWithInterest = reader.GetDecimal(reader.GetOrdinal("TotalAmountWithInterest"))
+            };
+        
+            // Leer resumen del mes actual
+            if (await reader.NextResultAsync() && await reader.ReadAsync())
+            {
+                statement.CurrentMonthPurchases = reader.GetDecimal(reader.GetOrdinal("CurrentMonthPurchases"));
+            }
+        
+            // Leer resumen del mes anterior
+            if (await reader.NextResultAsync() && await reader.ReadAsync())
+            {
+                statement.PreviousMonthPurchases = reader.GetDecimal(reader.GetOrdinal("PreviousMonthPurchases"));
+            }
+        
+            // Leer transacciones
+            statement.Transactions = new List<TransactionDTO>();
+            if (await reader.NextResultAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    statement.Transactions.Add(new TransactionDTO
+                    {
+                        Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                        Date = reader.GetDateTime(reader.GetOrdinal("Date")),
+                        Description = reader.GetString(reader.GetOrdinal("Description")),
+                        Amount = reader.GetDecimal(reader.GetOrdinal("Amount")),
+                        Type = (TransactionType)reader.GetInt32(reader.GetOrdinal("Type"))
+                    });
+                }
+            }
+            
+            return statement;
+        }
     }
 }
