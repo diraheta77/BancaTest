@@ -173,10 +173,9 @@ namespace BancaMinimalAPI.Data
             
             using var reader = await command.ExecuteReaderAsync();
             
-            // Si no hay resultados, retornar null
             if (!await reader.ReadAsync())
                 return null;
-        
+
             var statement = new CreditCardStatementDTO
             {
                 Id = reader.GetInt32(reader.GetOrdinal("Id")),
@@ -190,23 +189,13 @@ namespace BancaMinimalAPI.Data
                 BonusInterest = reader.GetDecimal(reader.GetOrdinal("BonusInterest")),
                 MinimumPayment = reader.GetDecimal(reader.GetOrdinal("MinimumPayment")),
                 TotalAmount = reader.GetDecimal(reader.GetOrdinal("TotalAmount")),
-                TotalAmountWithInterest = reader.GetDecimal(reader.GetOrdinal("TotalAmountWithInterest"))
+                TotalAmountWithInterest = reader.GetDecimal(reader.GetOrdinal("TotalAmountWithInterest")),
+                CurrentMonthPurchases = reader.GetDecimal(reader.GetOrdinal("CurrentMonthPurchases")),
+                PreviousMonthPurchases = reader.GetDecimal(reader.GetOrdinal("PreviousMonthPurchases")),
+                Transactions = new List<TransactionDTO>()
             };
-        
-            // Leer resumen del mes actual
-            if (await reader.NextResultAsync() && await reader.ReadAsync())
-            {
-                statement.CurrentMonthPurchases = reader.GetDecimal(reader.GetOrdinal("CurrentMonthPurchases"));
-            }
-        
-            // Leer resumen del mes anterior
-            if (await reader.NextResultAsync() && await reader.ReadAsync())
-            {
-                statement.PreviousMonthPurchases = reader.GetDecimal(reader.GetOrdinal("PreviousMonthPurchases"));
-            }
-        
-            // Leer transacciones
-            statement.Transactions = new List<TransactionDTO>();
+
+            // Leer transacciones si hay un segundo resultset
             if (await reader.NextResultAsync())
             {
                 while (await reader.ReadAsync())
@@ -221,8 +210,71 @@ namespace BancaMinimalAPI.Data
                     });
                 }
             }
-            
+
             return statement;
         }
+
+
+        public async Task<PaymentAmountsDTO?> CalculatePaymentAmountsAsync(int creditCardId)
+{
+    var parameter = new SqlParameter("@CreditCardId", creditCardId);
+    
+    using var command = Database.GetDbConnection().CreateCommand();
+    command.CommandText = "EXEC sp_CalculatePaymentAmounts @CreditCardId";
+    command.Parameters.Add(parameter);
+    
+    await Database.OpenConnectionAsync();
+    
+    using var reader = await command.ExecuteReaderAsync();
+    
+    if (!await reader.ReadAsync())
+        return null;
+
+    return new PaymentAmountsDTO
+    {
+        TotalBalance = reader.GetDecimal(reader.GetOrdinal("TotalBalance")),
+        BonusInterest = reader.GetDecimal(reader.GetOrdinal("BonusInterest")),
+        MinimumPayment = reader.GetDecimal(reader.GetOrdinal("MinimumPayment")),
+        TotalAmountWithInterest = reader.GetDecimal(reader.GetOrdinal("TotalAmountWithInterest"))
+    };
+}
+
+
+
+public async Task<List<MonthlyBalanceDTO>> GetMonthlyBalancesAsync(int creditCardId, int monthsBack = 6)
+{
+    var parameters = new[]
+    {
+        new SqlParameter("@CreditCardId", creditCardId),
+        new SqlParameter("@MonthsBack", monthsBack)
+    };
+    
+    using var command = Database.GetDbConnection().CreateCommand();
+    command.CommandText = "EXEC sp_GetMonthlyBalances @CreditCardId, @MonthsBack";
+    command.Parameters.AddRange(parameters);
+    
+    await Database.OpenConnectionAsync();
+    
+    using var reader = await command.ExecuteReaderAsync();
+    
+    var balances = new List<MonthlyBalanceDTO>();
+    
+    while (await reader.ReadAsync())
+    {
+        balances.Add(new MonthlyBalanceDTO
+        {
+            MonthYear = reader.GetDateTime(reader.GetOrdinal("MonthYear")),
+            TotalPurchases = reader.GetDecimal(reader.GetOrdinal("TotalPurchases")),
+            TotalPayments = reader.GetDecimal(reader.GetOrdinal("TotalPayments")),
+            PurchaseCount = reader.GetInt32(reader.GetOrdinal("PurchaseCount")),
+            PaymentCount = reader.GetInt32(reader.GetOrdinal("PaymentCount")),
+            NetBalance = reader.GetDecimal(reader.GetOrdinal("NetBalance"))
+        });
+    }
+    
+    return balances;
+}
+
+
     }
 }
