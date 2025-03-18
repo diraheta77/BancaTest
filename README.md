@@ -15,6 +15,12 @@ Sistema web para gestión de estados de cuenta de tarjetas de crédito, desarrol
 - Exportación a PDF
 - Listado de transacciones
 
+## URLs del Sistema
+### Para Pruebas
+- **Frontend**: [BancaWeb](https://bancaweb-bsaafugqbybjf8fm.eastus2-01.azurewebsites.net/)
+- **API**: [Swagger Documentation](https://bancaminimalapi-cyg8gqguemecbngz.eastus2-01.azurewebsites.net/)
+
+
 ## Documentación API
 ### Colección Postman
 [![Coleccion Postman](https://run.pstmn.io/button.svg)](https://tinyurl.com/bwrydssb)
