@@ -6,12 +6,19 @@ namespace BancaWeb.Services
     {
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _environment;
 
-        public ApiService(HttpClient httpClient, IConfiguration configuration)
+        public ApiService(HttpClient httpClient, IConfiguration configuration, IWebHostEnvironment environment)
         {
             _httpClient = httpClient;
             _configuration = configuration;
-            _httpClient.BaseAddress = new Uri(_configuration["ApiSettings:BaseUrl"]!);
+            _environment = environment;
+
+            var baseUrl = _environment.IsDevelopment() 
+                ? _configuration["ApiSettings:Development"]
+                : _configuration["ApiSettings:Production"];
+
+            _httpClient.BaseAddress = new Uri(baseUrl);
         }
 
         public async Task<T?> GetAsync<T>(string endpoint)
@@ -68,7 +75,5 @@ namespace BancaWeb.Services
             var response = await _httpClient.PutAsJsonAsync(endpoint, data);
             response.EnsureSuccessStatusCode();
         }
-
-
     }
 }
