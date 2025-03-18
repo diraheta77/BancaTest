@@ -272,7 +272,9 @@ transactionsGroup.MapPost("/payment", async (CreatePaymentDTO createDto,
     operation.Summary = "Registra un nuevo pago";
     operation.Description = "Crea una nueva transacción de tipo pago y actualiza el saldo de la tarjeta";
     return operation;
-});
+}).ProducesValidationProblem()
+.Produces<Transaction>(201)
+.Produces(400);
 
 // Configuration endpoints
 configurationGroup.MapGet("/", async (AppDbContext db, IMapper mapper) =>

@@ -36,7 +36,7 @@ namespace BancaWeb.Controllers
         {
             return View(new TransactionViewModel
             {
-                Date = DateTime.Today,
+                Date = DateTime.Now,
                 Type = TransactionType.Purchase,
                 CreditCardId = creditCardId
             });
@@ -66,7 +66,7 @@ namespace BancaWeb.Controllers
         {
             return View(new TransactionViewModel
             {
-                Date = DateTime.Today,
+                Date = DateTime.Now,
                 Type = TransactionType.Payment,
                 CreditCardId = creditCardId
             });

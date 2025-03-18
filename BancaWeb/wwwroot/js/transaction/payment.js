@@ -16,7 +16,7 @@ $(document).ready(function() {
     });
 
     // Establecer fecha actual por defecto
-    $('#Date').val(new Date().toISOString().split('T')[0]);
+    //$('#Date').val(new Date().toISOString().split('T')[0]);
 
     // Formatear monto como moneda
     $('#Amount').on('change', function() {
