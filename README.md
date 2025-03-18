@@ -17,7 +17,7 @@ Sistema web para gestión de estados de cuenta de tarjetas de crédito, desarrol
 
 ## Documentación API
 ### Colección Postman
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://tinyurl.com/bwrydssb)
+[![Coleccion Postman](https://run.pstmn.io/button.svg)](https://tinyurl.com/bwrydssb)
 
 La colección incluye todos los endpoints necesarios para:
 - Gestión de estados de cuenta
