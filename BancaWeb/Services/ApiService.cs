@@ -37,7 +37,7 @@ namespace BancaWeb.Services
         {
             var response = await _httpClient.PostAsJsonAsync(endpoint, data);
             response.EnsureSuccessStatusCode();
-            
+
             var content = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<T>(content, new JsonSerializerOptions
             {
@@ -51,6 +51,24 @@ namespace BancaWeb.Services
             response.EnsureSuccessStatusCode();
         }
 
-        
+        public async Task<T?> PutAsync<T>(string endpoint, object data)
+        {
+            var response = await _httpClient.PutAsJsonAsync(endpoint, data);
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<T>(content, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+        }
+
+        public async Task PutAsync(string endpoint, object data)
+        {
+            var response = await _httpClient.PutAsJsonAsync(endpoint, data);
+            response.EnsureSuccessStatusCode();
+        }
+
+
     }
 }

@@ -1,10 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using BancaMinimalAPI.Models;
 using Microsoft.Data.SqlClient;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using BancaMinimalAPI.Features.CreditCards.DTOs;
 using BancaMinimalAPI.Features.Transactions.DTOs;
+
 
 namespace BancaMinimalAPI.Data
 {
@@ -16,6 +15,8 @@ namespace BancaMinimalAPI.Data
 
         public DbSet<CreditCard> CreditCards { get; set; } = null!;
         public DbSet<Transaction> Transactions { get; set; } = null!;
+
+        public DbSet<Configuration> Configurations { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,6 +31,17 @@ namespace BancaMinimalAPI.Data
             modelBuilder.Entity<Transaction>()
                 .Property(t => t.Amount)
                 .HasPrecision(18, 2);
+
+                modelBuilder.Entity<Configuration>().HasData(
+            new Configuration
+            {
+                Id = 1,
+                InterestRate = 25.0m,
+                MinimumPaymentRate = 5.0m,
+                LastUpdated = DateTime.UtcNow
+            }
+        );
+
         }
 
         // public async Task<CreditCard> GetCreditCardStatementAsync(int creditCardId)

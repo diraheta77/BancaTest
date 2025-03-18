@@ -19,6 +19,8 @@ using BancaMinimalAPI.Middleware;
 using BancaMinimalAPI.Common.Exceptions;
 using AspNetCoreRateLimit;
 using Swashbuckle.AspNetCore.Filters;
+using BancaMinimalAPI.Features.Configuration.DTOs;
+using BancaMinimalAPI.Features.Configuration.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +28,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<PdfGeneratorService>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreatePaymentDTOValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<ConfigurationValidator>();
 //defino el context para la BD
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -87,6 +90,10 @@ var creditCardsGroup = app.MapGroup("/api/creditcards")
 
 var transactionsGroup = app.MapGroup("/api/transactions")
     .WithTags("Transactions")
+    .WithOpenApi();
+
+var configurationGroup = app.MapGroup("/api/configuration")
+    .WithTags("Configuration")
     .WithOpenApi();
 
 // Credit Cards endpoints
@@ -261,6 +268,35 @@ transactionsGroup.MapPost("/payment", async (CreatePaymentDTO createDto,
     }
 })
 .WithName("CreatePayment");
+
+// Configuration endpoints
+configurationGroup.MapGet("/", async (AppDbContext db, IMapper mapper) =>
+{
+    var config = await db.Configurations.FirstOrDefaultAsync();
+    if (config == null) return Results.NotFound();
+    return Results.Ok(mapper.Map<ConfigurationDTO>(config));
+})
+.WithName("GetConfiguration");
+
+
+configurationGroup.MapPut("/", async (ConfigurationDTO dto, AppDbContext db, IMapper mapper) =>
+{
+    var config = await db.Configurations.FirstOrDefaultAsync();
+    if (config == null)
+    {
+        config = mapper.Map<BancaMinimalAPI.Models.Configuration>(dto);
+        db.Configurations.Add(config);
+    }
+    else
+    {
+        mapper.Map(dto, config);
+        config.LastUpdated = DateTime.UtcNow;
+    }
+    
+    await db.SaveChangesAsync();
+    return Results.Ok(mapper.Map<ConfigurationDTO>(config));
+})
+.WithName("UpdateConfiguration");
 
 // Health Check endpoint
 app.MapHealthChecks("/health")
