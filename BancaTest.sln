@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BancaAPI", "BancaAPI\BancaAPI.csproj", "{C75BC5CA-26F0-48FD-A6CD-67D6535C7308}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BancaWeb", "BancaWeb\BancaWeb.csproj", "{61BDD59B-BE11-430E-B4EA-137BF32ED0EC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BancaMinimalAPI", "BancaMinimalAPI\BancaMinimalAPI.csproj", "{D450A08E-E430-412F-B262-7CBBF0882969}"
@@ -15,10 +13,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C75BC5CA-26F0-48FD-A6CD-67D6535C7308}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C75BC5CA-26F0-48FD-A6CD-67D6535C7308}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C75BC5CA-26F0-48FD-A6CD-67D6535C7308}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C75BC5CA-26F0-48FD-A6CD-67D6535C7308}.Release|Any CPU.Build.0 = Release|Any CPU
 		{61BDD59B-BE11-430E-B4EA-137BF32ED0EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{61BDD59B-BE11-430E-B4EA-137BF32ED0EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61BDD59B-BE11-430E-B4EA-137BF32ED0EC}.Release|Any CPU.ActiveCfg = Release|Any CPU

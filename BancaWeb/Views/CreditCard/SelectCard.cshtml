@@ -1,0 +1,31 @@
+@model List<CreditCardViewModel>
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h2>Seleccionar Tarjeta de Crédito</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                @foreach (var card in Model)
+                {
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-credit-card"></i> @card.CardNumber
+                                </h5>
+                                <p class="card-text">@card.HolderName</p>
+                                <hr>
+                                <a asp-action="Index" asp-route-id="@card.Id" 
+                                   class="btn btn-primary btn-block">
+                                    <i class="fas fa-eye"></i> Ver Estado de Cuenta
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
