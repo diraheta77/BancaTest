@@ -80,6 +80,12 @@ BancaTest/
     ├── Views/             # Vistas Razor
     └── Services/          # Servicios del cliente
 ```
+## Supuestos y Consideraciones
+- Los montos se manejan en dólares estadounidenses (USD)
+- Las tarjetas de crédito (3) están precargadas en el sistema
+- Los cálculos de interés se realizan al momento de generar el estado de cuenta
+- El sistema no maneja autenticación de usuarios para simplificar la demostración
+- Los límites de crédito están preestablecidos para cada tarjeta
 
 ## Configuración Local
 1. Prerrequisitos:
