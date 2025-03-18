@@ -28,6 +28,20 @@ Sistema web para gestión de estados de cuenta de tarjetas de crédito, desarrol
 - FontAwesome
 - Toastr
 
+## Seguridad y Optimización
+### Rate Limiting
+La API implementa límites de tasa para proteger los recursos y optimizar costos:
+- Límite de 100 solicitudes por minuto por IP
+- Respuesta 429 (Too Many Requests) al exceder el límite
+- Headers de control X-Rate-Limit en respuestas
+- Configuración personalizable via appsettings.json
+
+Esta característica ayuda a:
+- Prevenir abusos de la API
+- Optimizar costos en Azure
+- Mantener rendimiento óptimo
+- Proteger contra ataques DoS
+
 ## Estructura del Proyecto
 ```
 BancaTest/
