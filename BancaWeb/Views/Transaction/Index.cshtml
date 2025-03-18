@@ -1,0 +1,39 @@
+@using BancaWeb.Models.ViewModels
+@model List<TransactionViewModel>
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h2>Historial de Transacciones</h2>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Descripción</th>
+                        <th>Tipo</th>
+                        <th class="text-end">Monto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var transaction in Model)
+                    {
+                        <tr>
+                            <td>@transaction.Date.ToString("dd/MM/yyyy")</td>
+                            <td>@transaction.Description</td>
+                            <td>@(transaction.Type == TransactionType.Purchase ? "Compra" : "Pago")</td>
+                            <td class="text-end @(transaction.Type == TransactionType.Purchase ? "text-danger" : "text-success")">
+                                @transaction.Amount.ToString("C")
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/transaction/index.js"></script>
+}

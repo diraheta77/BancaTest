@@ -5,6 +5,7 @@ using iText.Layout.Properties;
 using iText.Kernel.Font;
 using iText.IO.Font.Constants;
 using BancaMinimalAPI.Features.CreditCards.DTOs;
+using BancaMinimalAPI.Extensions;
 
 namespace BancaMinimalAPI.Services
 {
@@ -60,7 +61,7 @@ namespace BancaMinimalAPI.Services
             {
                 table.AddCell(transaction.Date.ToString("dd/MM/yyyy"));
                 table.AddCell(transaction.Description);
-                table.AddCell(transaction.Type.ToString());
+                table.AddCell(transaction.Type.ToSpanish());
                 table.AddCell($"${transaction.Amount:N2}");
             }
 

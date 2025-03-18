@@ -1,18 +1,88 @@
+/* Estilos generales */
 html {
   font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-html {
   position: relative;
   min-height: 100%;
 }
 
 body {
   margin-bottom: 60px;
+  background-color: #f8f9fa;
+}
+
+/* Estilos del pie de página */
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px;
+}
+
+/* Estilos de tarjetas */
+.card {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  margin-bottom: 1.5rem;
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid rgba(0,0,0,.125);
+}
+
+/* Estilos de montos */
+.amount-positive {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.amount-negative {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+/* Estilos de formularios */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.validation-summary-errors {
+  color: #dc3545;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #dc3545;
+  border-radius: 0.25rem;
+}
+
+/* Estilos de tablas */
+.table {
+  background-color: white;
+}
+
+.table thead th {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+}
+
+/* Estilos responsivos */
+@media (min-width: 768px) {
+  html {
+      font-size: 16px;
+  }
+}
+
+/* Estilos de DataTables */
+.dataTables_wrapper {
+  padding: 1rem;
+  background-color: white;
+  border-radius: 0.25rem;
+}
+
+/* Estilos de Toastr */
+.toast-success {
+  background-color: #28a745;
+}
+
+.toast-error {
+  background-color: #dc3545;
 }

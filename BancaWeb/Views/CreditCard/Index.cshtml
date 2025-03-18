@@ -1,0 +1,67 @@
+@using BancaWeb.Models.ViewModels
+@model CreditCardViewModel
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h2>Estado de Cuenta</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Información de la Tarjeta</h4>
+                    <table class="table">
+                        <tr>
+                            <td>Número de Tarjeta:</td>
+                            <td>@Model.CardNumber</td>
+                        </tr>
+                        <tr>
+                            <td>Titular:</td>
+                            <td>@Model.HolderName</td>
+                        </tr>
+                        <tr>
+                            <td>Límite de Crédito:</td>
+                            <td>@Model.CreditLimit.ToString("C")</td>
+                        </tr>
+                        <tr>
+                            <td>Saldo Disponible:</td>
+                            <td>@Model.AvailableBalance.ToString("C")</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <h4>Resumen de Saldos</h4>
+                    <table class="table">
+                        <tr>
+                            <td>Saldo Actual:</td>
+                            <td>@Model.CurrentBalance.ToString("C")</td>
+                        </tr>
+                        <tr>
+                            <td>Interés Bonificable:</td>
+                            <td>@Model.BonusInterest.ToString("C")</td>
+                        </tr>
+                        <tr>
+                            <td>Pago Mínimo:</td>
+                            <td>@Model.MinimumPayment.ToString("C")</td>
+                        </tr>
+                        <tr>
+                            <td>Pago de Contado:</td>
+                            <td>@Model.TotalAmountWithInterest.ToString("C")</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col">
+                    <a asp-action="Purchase" asp-controller="Transaction" class="btn btn-primary">Nueva Compra</a>
+                    <a asp-action="Payment" asp-controller="Transaction" class="btn btn-success">Realizar Pago</a>
+                    <a asp-action="ExportPdf" class="btn btn-secondary">Exportar PDF</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/creditcard/index.js"></script>
+}
