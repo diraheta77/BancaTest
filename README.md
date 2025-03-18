@@ -15,6 +15,24 @@ Sistema web para gestión de estados de cuenta de tarjetas de crédito, desarrol
 - Exportación a PDF
 - Listado de transacciones
 
+## Documentación API
+### Colección Postman
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://tinyurl.com/bwrydssb)
+
+La colección incluye todos los endpoints necesarios para:
+- Gestión de estados de cuenta
+- Registro de transacciones
+- Configuración del sistema
+- Ejemplos de peticiones
+
+### Endpoints Principales
+- `GET /api/creditcards/{id}` - Obtiene estado de cuenta
+- `GET /api/creditcards/{id}/transactions` - Lista transacciones
+- `POST /api/transactions/purchase` - Registra compra
+- `POST /api/transactions/payment` - Registra pago
+- `GET /api/configuration` - Obtiene configuración
+- `PUT /api/configuration` - Actualiza configuración
+
 ## Tecnologías Utilizadas
 - ASP.NET Core 8 (Minimal API + MVC)
 - SQL Server
