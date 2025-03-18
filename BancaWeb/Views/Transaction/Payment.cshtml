@@ -9,35 +9,42 @@
             <form asp-action="Payment" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 
-                <input type="hidden" asp-for="Type" />
-                <input type="hidden" asp-for="CreditCardId" value="1" />
-
+                <input type="hidden" asp-for="CreditCardId" />
+                <input type="hidden" asp-for="Type" value="@TransactionType.Payment" />
+                
                 <div class="form-group">
-                    <label asp-for="Date">Fecha de Pago</label>
+                    <label asp-for="Date">Fecha</label>
                     <input asp-for="Date" class="form-control" type="date" />
                     <span asp-validation-for="Date" class="text-danger"></span>
                 </div>
 
                 <div class="form-group mt-3">
                     <label asp-for="Description">Descripción</label>
-                    <input asp-for="Description" class="form-control" value="Pago mensual" />
+                    <input asp-for="Description" class="form-control" />
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
 
                 <div class="form-group mt-3">
-                    <label asp-for="Amount">Monto a Pagar</label>
-                    <input asp-for="Amount" class="form-control" type="number" step="0.01" />
+                    <label asp-for="Amount">Monto</label>
+                    <input asp-for="Amount" class="form-control" type="number" step="0.01" min="0" />
                     <span asp-validation-for="Amount" class="text-danger"></span>
                 </div>
 
                 <div class="form-group mt-4">
-                    <button type="submit" class="btn btn-success">Procesar Pago</button>
-                    <a asp-action="Index" asp-controller="CreditCard" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> Registrar Pago
+                    </button>
+                    <a asp-action="Index" asp-controller="CreditCard" 
+                       asp-route-id="@Model.CreditCardId" class="btn btn-secondary">
+                        Cancelar
+                    </a>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

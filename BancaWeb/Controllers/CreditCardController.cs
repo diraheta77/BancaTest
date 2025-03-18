@@ -76,5 +76,34 @@ namespace BancaWeb.Controllers
                 return RedirectToAction("Error", "Home");
             }
         }
+
+        public IActionResult SelectCard()
+        {
+            var cards = new List<CreditCardViewModel>
+    {
+        new CreditCardViewModel
+        {
+            Id = 1,
+            CardNumber = "4121-1234-3421-6543",
+            HolderName = "Diego Iraheta"
+        },
+        new CreditCardViewModel
+        {
+            Id = 2,
+            CardNumber = "4144-2345-9817-8127",
+            HolderName = "Santiago Andre"
+        },
+        new CreditCardViewModel
+        {
+            Id = 3,
+            CardNumber = "4111-1111-1111-1111",
+            HolderName = "Stan Smith"
+        }
+    };
+
+            return View(cards);
+        }
+
+
     }
 }

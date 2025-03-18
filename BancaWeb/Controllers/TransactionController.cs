@@ -32,13 +32,13 @@ namespace BancaWeb.Controllers
                 return RedirectToAction("Index", "CreditCard");
             }
         }
-
-        public IActionResult Purchase()
+        public IActionResult Purchase(int creditCardId)
         {
             return View(new TransactionViewModel
             {
                 Date = DateTime.Today,
-                Type = TransactionType.Purchase
+                Type = TransactionType.Purchase,
+                CreditCardId = creditCardId
             });
         }
 
@@ -62,12 +62,13 @@ namespace BancaWeb.Controllers
             }
         }
 
-        public IActionResult Payment()
+        public IActionResult Payment(int creditCardId)
         {
             return View(new TransactionViewModel
             {
                 Date = DateTime.Today,
-                Type = TransactionType.Payment
+                Type = TransactionType.Payment,
+                CreditCardId = creditCardId
             });
         }
 

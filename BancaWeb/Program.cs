@@ -30,6 +30,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=CreditCard}/{action=Index}/{id?}");
+    pattern: "{controller=CreditCard}/{action=SelectCard}/{id?}");
 
 app.Run();

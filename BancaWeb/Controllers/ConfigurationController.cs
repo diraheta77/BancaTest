@@ -34,7 +34,19 @@ namespace BancaWeb.Controllers
         {
             try
             {
-                await _apiService.PutAsync("api/configuration", model);
+                if (!ModelState.IsValid)
+                {
+                    return View("Index", model);
+                }
+
+                await _apiService.PutAsync("api/configuration", new
+                {
+                    model.Id,
+                    model.InterestRate,
+                    model.MinimumPaymentRate,
+                    LastUpdated = DateTime.UtcNow
+                });
+
                 TempData["Success"] = "Configuración actualizada correctamente";
                 return RedirectToAction(nameof(Index));
             }

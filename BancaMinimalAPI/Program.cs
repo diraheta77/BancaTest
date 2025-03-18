@@ -267,7 +267,12 @@ transactionsGroup.MapPost("/payment", async (CreatePaymentDTO createDto,
         throw new BusinessException($"Error al procesar el pago: {ex.Message}");
     }
 })
-.WithName("CreatePayment");
+.WithName("CreatePayment")
+.WithOpenApi(operation => {
+    operation.Summary = "Registra un nuevo pago";
+    operation.Description = "Crea una nueva transacción de tipo pago y actualiza el saldo de la tarjeta";
+    return operation;
+});
 
 // Configuration endpoints
 configurationGroup.MapGet("/", async (AppDbContext db, IMapper mapper) =>
